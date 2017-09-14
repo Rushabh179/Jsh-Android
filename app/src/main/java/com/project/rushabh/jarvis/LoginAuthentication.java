@@ -23,12 +23,12 @@ public class LoginAuthentication extends AsyncTask<Object,Object,String> {
             String id = (String) params[0];
             String password = (String) params[1];
 
-            String link = "http://192.168.1.35:8080/Jsh/loginauthentication.php";
+            String link = "http://192.168.1.35:8080/Jarvis/loginauthentication.php";
             String data = URLEncoder.encode("id", "UTF-8") + "=" +
                     URLEncoder.encode(id, "UTF-8");
             data += "&" + URLEncoder.encode("password", "UTF-8") + "=" +
                     URLEncoder.encode(password, "UTF-8");
-            /*String link = "http://192.168.1.35:8080/Jsh/serr.php";
+            /*String link = "http://192.168.1.35:8080/Jarvis/serr.php";
             String data = URLEncoder.encode("val", "UTF-8") + "=" + URLEncoder.encode(value, "UTF-8");*/
 
             URL url = new URL(link);

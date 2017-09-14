@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +25,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,15 +136,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to perform the user login attempt.
-            showProgress(true);
+            //showProgress(true);////
             try {
-                //Log.i("..............", new LoginAuthentication().execute(id, password).get());//TODO: MY:
+                //Log.i("..............", new LoginAuthentication().execute(id, password).get());////
                 String role = new LoginAuthentication().execute(id, password).get();
                 if (Objects.equals(role, "0")){
-                    //startActivity(new Intent(LoginActivity.this,ActivityAdmin.class));
+                    startActivity(new Intent(LoginActivity.this,AdminHome.class));
                 }
                 else if (Objects.equals(role, "1")){
-                    //startActivity(new Intent(LoginActivity.this,ActivityUser.class));
+                    startActivity(new Intent(LoginActivity.this,LoginActivity.class));
+                }
+                else{
+                    Toast.makeText(this, R.string.incorrect_message,Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
