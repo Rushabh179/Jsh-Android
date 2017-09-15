@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -138,8 +139,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to perform the user login attempt.
             //showProgress(true);////
             try {
-                //Log.i("..............", new LoginAuthentication().execute(id, password).get());////
                 String role = new LoginAuthentication().execute(id, password).get();
+                Log.i("..............", role);////
                 if (Objects.equals(role, "0")){
                     startActivity(new Intent(LoginActivity.this,AdminHome.class));
                 }
@@ -166,7 +167,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Shows the progress UI and hides the login form.
      */
-    private void showProgress(final boolean show) {
+    /*private void showProgress(final boolean show) {
 
         int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -187,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             }
         });
-    }
+    }*/
 
 
     @Override
