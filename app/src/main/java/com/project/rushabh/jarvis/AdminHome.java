@@ -15,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 public class AdminHome extends AppCompatActivity
@@ -24,14 +23,19 @@ public class AdminHome extends AppCompatActivity
     private static final String APP_SHARED_PREFS = "preferences";
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
-    boolean isUserLoggedIn;
+    boolean isLoggedIn;
+
+    Intent i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("...........2","create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        i=new Intent(this,LoginActivity.class);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnLongClickListener(new View.OnLongClickListener(){
@@ -55,16 +59,11 @@ public class AdminHome extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Log.i("...........","backpressed");
+        Log.i("...........2","backpressed");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            /*Intent intent = new Intent(this, AdminHome.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);*/
-            //moveTaskToBack(true);
-            //finish();
             Intent a = new Intent(Intent.ACTION_MAIN);
             a.addCategory(Intent.CATEGORY_HOME);
             a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -102,18 +101,19 @@ public class AdminHome extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_opt1) {
-            // Handle the camera action
+        if (id == R.id.nav_opt1) {//Account setup
+            startActivity(new Intent(this,AccountSetup.class));
         } else if (id == R.id.nav_opt2) {
 
         } else if (id == R.id.nav_opt3) {
 
         } else if (id == R.id.nav_opt4) {//Logout
-            sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+            //sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
             editor = sharedPrefs.edit();
-            editor.putBoolean("userLoggedInState", false);
+            editor.putBoolean("loggedInState", false);
             editor.apply();
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(i);
+
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -126,24 +126,22 @@ public class AdminHome extends AppCompatActivity
     }
 
     @Override
+    protected void onStart() {
+        Log.i("...........2","start");
+        super.onStart();
+    }
+
+    @Override
     protected void onRestart() {
         Log.i("...........2","restart");
-        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
-        if(!isUserLoggedIn){
-            startActivity(new Intent(this,LoginActivity.class));
-        }
+        checkLogin();
         super.onRestart();
     }
 
     @Override
     protected void onResume() {
         Log.i("...........2","resume");
-        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
-        if(!isUserLoggedIn){
-            startActivity(new Intent(this,LoginActivity.class));
-        }
+        checkLogin();
         super.onResume();
     }
 
@@ -157,5 +155,13 @@ public class AdminHome extends AppCompatActivity
     protected void onDestroy() {
         Log.i("...........2","destroy");
         super.onDestroy();
+    }
+
+    public void checkLogin(){
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        isLoggedIn = sharedPrefs.getBoolean("loggedInState", false);
+        if(!isLoggedIn){
+            startActivity(i);
+        }
     }
 }

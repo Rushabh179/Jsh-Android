@@ -1,37 +1,25 @@
 package com.project.rushabh.jarvis;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -40,36 +28,30 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
-
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-
-    private LoginAuthentication mAuthTask = null;
-
     // UI references.
-    private AutoCompleteTextView mIdView;
+    private TextInputEditText mIdView;
     private EditText mPasswordView;
-    //private View mProgressView;
     private View mLoginFormView;
     private static final String APP_SHARED_PREFS = "preferences";
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
-    boolean isUserLoggedIn;
+    boolean isLoggedIn;
+
+    Intent i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("...........","create");
         super.onCreate(savedInstanceState);
 
-        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
-        if(isUserLoggedIn){
-            startActivity(new Intent(this,AdminHome.class));
-        }
+        i=new Intent(LoginActivity.this,AdminHome.class);
+
+        checkLogIn();
         setContentView(R.layout.activity_login);
 
+
         // Set up the login form.
-        mIdView = (AutoCompleteTextView) findViewById(R.id.id);
+        mIdView = (TextInputEditText) findViewById(R.id.id);
 
         //Login on pressing enter
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -106,10 +88,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         // Reset errors.
         mIdView.setError(null);
         mPasswordView.setError(null);
@@ -144,25 +122,23 @@ public class LoginActivity extends AppCompatActivity {
             cancel = true;
         }
 
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to perform the user login attempt.
-            //showProgress(true);////
             try {
                 String[] rolenumber = new LoginAuthentication().execute(id, password).get().split(" ");
-                //String[] rolenumber=code.split(" ");
-                //Log.d("..............", code);
-                if (Objects.equals(rolenumber[0], "0")){
-                    startActivity(new Intent(LoginActivity.this,AdminHome.class));
+                Log.i("aa............aa",new LoginAuthentication().execute(id, password).get());
+                if (Objects.equals(rolenumber[0], "0") || Objects.equals(rolenumber[0], "1")){
+                    //loggedIn();
+                    startActivity(i);
                     editor = sharedPrefs.edit();
-                    editor.putBoolean("userLoggedInState", true);
+                    editor.putBoolean("loggedInState", true);
+                    editor.putString("number", rolenumber[1]);
+                    editor.putString("id", id);
+                    editor.putString("password", password);
+                    editor.putString("role", rolenumber[0]);
                     editor.apply();
-                }
-                else if (Objects.equals(rolenumber[0], "1")){
-                    startActivity(new Intent(LoginActivity.this,LoginActivity.class));
                 }
                 else{
                     Toast.makeText(this, R.string.incorrect_message,Toast.LENGTH_LONG).show();
@@ -192,24 +168,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        Log.i("...........","start");
+        super.onStart();
+    }
+
+    @Override
     protected void onRestart() {
         Log.i("...........","restart");
-        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
-        if(isUserLoggedIn){
-            startActivity(new Intent(this,AdminHome.class));
-        }
+        checkLogIn();
         super.onRestart();
     }
 
     @Override
     protected void onResume() {
         Log.i("...........","resume");
-        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
-        if(isUserLoggedIn){
-            startActivity(new Intent(this,AdminHome.class));
-        }
+        checkLogIn();
         super.onResume();
     }
 
@@ -223,5 +197,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onDestroy() {
         Log.i("...........","destroy");
         super.onDestroy();
+    }
+
+    public void checkLogIn(){
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        isLoggedIn = sharedPrefs.getBoolean("loggedInState", false);
+        if(isLoggedIn){
+            startActivity(i);
+        }
+    }
+
+    public void loggedIn(){
+
     }
 }
