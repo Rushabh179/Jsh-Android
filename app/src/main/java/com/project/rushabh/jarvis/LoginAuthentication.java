@@ -8,28 +8,31 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Created by Rushabh on 13-Sep-17.
  */
 
-public class LoginAuthentication extends AsyncTask<Object,Object,String> {
+public class LoginAuthentication extends AsyncTask<String,Void,String> {
 
-    //String value = "2";
+    //String value="2";
+
     @Override
-    protected String doInBackground(Object[] params) {
+    protected String doInBackground(String... params) {
         try {
-            String id = (String) params[0];
-            String password = (String) params[1];
+            String id = params[0];
+            String password = params[1];
 
-            String link = "http://192.168.0.104:8080/Jarvis/loginauthentication.php";
+            /*String link = "http://192.168.0.253/serr.php";
+            String data = URLEncoder.encode("val", "UTF-8") + "=" + URLEncoder.encode(value, "UTF-8");*/
+
+            String link = "http://192.168.1.34:8080/Jsh/loginauthentication.php";
             String data = URLEncoder.encode("id", "UTF-8") + "=" +
                     URLEncoder.encode(id, "UTF-8");
             data += "&" + URLEncoder.encode("password", "UTF-8") + "=" +
                     URLEncoder.encode(password, "UTF-8");
-            /*String link = "http://192.168.1.35:8080/Jarvis/serr.php";
-            String data = URLEncoder.encode("val", "UTF-8") + "=" + URLEncoder.encode(value, "UTF-8");*/
 
             URL url = new URL(link);
             URLConnection conn = url.openConnection();
@@ -47,14 +50,18 @@ public class LoginAuthentication extends AsyncTask<Object,Object,String> {
             String line;
 
             // Read Server Response
+            int i=0;
             line = reader.readLine();
             while (line != null && !line.equalsIgnoreCase("")) {
                 sb.append(line);
+                //list[i]=sb.toString();
                 line = reader.readLine();
+                i++;
             }
             return sb.toString();
+
         } catch (Exception e) {
-            return "Exception:" + Arrays.toString(e.getStackTrace());
+            return e.toString();
         }
     }
 }

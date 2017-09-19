@@ -20,4 +20,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="incorrect_message">Incorrect Username or Password</string>
+    <string name="nav_opt1">Account Setup</string>
+    <string name="nav_opt2">FAQs</string>
+    <string name="nav_opt3">About</string>
+    <string name="nav_opt4">Logout</string>
 </resources>

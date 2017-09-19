@@ -3,24 +3,25 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Add User"/>
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Add Room"/>
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow"/>
-        <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_opt1"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools"/>
+            android:title="@string/nav_opt1"/>
+        <item
+            android:id="@+id/nav_opt2"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/nav_opt2"/>
+        <item
+            android:id="@+id/nav_opt3"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/nav_opt3"/>
+
+        <item
+            android:id="@+id/nav_opt4"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/nav_opt4"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Additional admin functionalities">
         <menu>
             <item
                 android:id="@+id/nav_share"
@@ -32,6 +33,4 @@
                 android:title="Send"/>
         </menu>
     </item>
-
-
 </menu>

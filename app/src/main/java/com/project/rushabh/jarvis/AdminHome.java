@@ -1,5 +1,8 @@
 package com.project.rushabh.jarvis;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +20,10 @@ import android.view.MenuItem;
 public class AdminHome extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String APP_SHARED_PREFS = "preferences";
+    SharedPreferences sharedPrefs;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,11 +32,12 @@ public class AdminHome extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnLongClickListener(new View.OnLongClickListener(){
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            public boolean onLongClick(View view) {
+                Snackbar.make(view, "Add Room", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                return true;
             }
         });
 
@@ -53,6 +61,7 @@ public class AdminHome extends AppCompatActivity
         }
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -73,7 +82,7 @@ public class AdminHome extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -81,14 +90,18 @@ public class AdminHome extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_opt1) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_opt2) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_opt3) {
 
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_opt4) {//Logout
+            sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+            editor = sharedPrefs.edit();
+            editor.putBoolean("userLoggedInState", false);
+            editor.apply();
+            startActivity(new Intent(this,LoginActivity.class));
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

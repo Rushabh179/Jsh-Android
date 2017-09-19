@@ -2,7 +2,9 @@ package com.project.rushabh.jarvis;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -48,13 +50,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     // UI references.
     private AutoCompleteTextView mIdView;
     private EditText mPasswordView;
-    private View mProgressView;
+    //private View mProgressView;
     private View mLoginFormView;
+    private static final String APP_SHARED_PREFS = "preferences";
+    SharedPreferences sharedPrefs;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        boolean isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
+        if(isUserLoggedIn){
+            startActivity(new Intent(this,AdminHome.class));
+        }
         setContentView(R.layout.activity_login);
+
         // Set up the login form.
         mIdView = (AutoCompleteTextView) findViewById(R.id.id);
 
@@ -82,8 +94,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        //mLoginFormView = findViewById(R.id.login_form);
+        //mProgressView = findViewById(R.id.login_progress);
     }
 
     /**
@@ -139,12 +151,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to perform the user login attempt.
             //showProgress(true);////
             try {
-                String role = new LoginAuthentication().execute(id, password).get();
-                Log.i("..............", role);////
-                if (Objects.equals(role, "0")){
+                String[] rolenumber = new LoginAuthentication().execute(id, password).get().split(" ");
+                //String[] rolenumber=code.split(" ");
+                //Log.d("..............", code);
+                if (Objects.equals(rolenumber[0], "0")){
                     startActivity(new Intent(LoginActivity.this,AdminHome.class));
+                    editor = sharedPrefs.edit();
+                    editor.putBoolean("userLoggedInState", true);
+                    editor.apply();
                 }
-                else if (Objects.equals(role, "1")){
+                else if (Objects.equals(rolenumber[0], "1")){
                     startActivity(new Intent(LoginActivity.this,LoginActivity.class));
                 }
                 else{
@@ -164,32 +180,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return password.length() > 4;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    /*private void showProgress(final boolean show) {
 
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        });
-
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
-    }*/
-
+    ///////////Loader methods/////////
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -216,7 +208,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             ids.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
-
         addIdsToAutoComplete(ids);
     }
 
