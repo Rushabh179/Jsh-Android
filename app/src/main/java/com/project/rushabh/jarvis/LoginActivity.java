@@ -38,7 +38,7 @@ import java.util.Objects;
  * A login screen that offers login via id and password.
  */
 
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity {
 
 
     /**
@@ -55,13 +55,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String APP_SHARED_PREFS = "preferences";
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
+    boolean isUserLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        boolean isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
+        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
         if(isUserLoggedIn){
             startActivity(new Intent(this,AdminHome.class));
         }
@@ -180,59 +181,47 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return password.length() > 4;
     }
 
-
-    ///////////Loader methods/////////
-
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only ids.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary ids first. Note that there won't be
-                // a primary ids if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
+    public void onBackPressed() {
+        Log.i("...........","backpressed");
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+        super.onBackPressed();
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> ids = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            ids.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
+    protected void onRestart() {
+        Log.i("...........","restart");
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
+        if(isUserLoggedIn){
+            startActivity(new Intent(this,AdminHome.class));
         }
-        addIdsToAutoComplete(ids);
+        super.onRestart();
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
+    protected void onResume() {
+        Log.i("...........","resume");
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
+        if(isUserLoggedIn){
+            startActivity(new Intent(this,AdminHome.class));
+        }
+        super.onResume();
     }
 
-    private void addIdsToAutoComplete(List<String> idCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, idCollection);
-
-        mIdView.setAdapter(adapter);
+    @Override
+    protected void onPause() {
+        Log.i("...........","pause");
+        super.onPause();
     }
 
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
+    @Override
+    protected void onDestroy() {
+        Log.i("...........","destroy");
+        super.onDestroy();
     }
 }

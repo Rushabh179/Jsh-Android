@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +24,7 @@ public class AdminHome extends AppCompatActivity
     private static final String APP_SHARED_PREFS = "preferences";
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
+    boolean isUserLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +55,20 @@ public class AdminHome extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        Log.i("...........","backpressed");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            /*Intent intent = new Intent(this, AdminHome.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);*/
+            //moveTaskToBack(true);
+            //finish();
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
             super.onBackPressed();
         }
     }
@@ -111,5 +123,39 @@ public class AdminHome extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.i("...........2","restart");
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
+        if(!isUserLoggedIn){
+            startActivity(new Intent(this,LoginActivity.class));
+        }
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i("...........2","resume");
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        isUserLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
+        if(!isUserLoggedIn){
+            startActivity(new Intent(this,LoginActivity.class));
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.i("...........2","pause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i("...........2","destroy");
+        super.onDestroy();
     }
 }
