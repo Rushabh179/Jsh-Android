@@ -3,8 +3,10 @@ package com.project.rushabh.jarvis;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -17,27 +19,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-public class AdminHome extends AppCompatActivity
+import java.util.Objects;
+
+public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String APP_SHARED_PREFS = "preferences";
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
     boolean isLoggedIn;
+    String roleOfLogger;
 
     Intent i;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("...........2","create");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_home);
+        setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         i=new Intent(this,LoginActivity.class);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        roleOfLogger = sharedPrefs.getString("role", "");
+        if(Objects.equals(roleOfLogger, "1")){
+            fab.setVisibility(View.GONE);
+        }
         fab.setOnLongClickListener(new View.OnLongClickListener(){
             @Override
             public boolean onLongClick(View view) {
@@ -76,7 +87,7 @@ public class AdminHome extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.admin_home, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
@@ -103,11 +114,15 @@ public class AdminHome extends AppCompatActivity
 
         if (id == R.id.nav_opt1) {//Account setup
             startActivity(new Intent(this,AccountSetup.class));
-        } else if (id == R.id.nav_opt2) {
+        }
+        else if (id == R.id.nav_opt2) {//Users
+            startActivity(new Intent(this,Users.class));
+        }
+        else if (id == R.id.nav_opt3) {//FAQs
 
-        } else if (id == R.id.nav_opt3) {
+        } else if (id == R.id.nav_opt4) {//About
 
-        } else if (id == R.id.nav_opt4) {//Logout
+        } else if (id == R.id.nav_opt5) {//Logout
             //sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
             editor = sharedPrefs.edit();
             editor.putBoolean("loggedInState", false);

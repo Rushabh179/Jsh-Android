@@ -8,8 +8,6 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Rushabh on 13-Sep-17.

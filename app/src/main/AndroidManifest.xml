@@ -27,11 +27,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AdminHome"
-            android:label="@string/title_activity_admin_home"
+            android:name=".Home"
+            android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".AccountSetup">
+        <activity
+            android:name=".Users"
+            android:label="@string/title_activity_users"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.rushabh.jarvis.Home"/>
+        </activity>
+        <activity
+            android:name=".AccountSetup"
+            android:label="@string/title_activity_account_setup"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.rushabh.jarvis.Home"/>
         </activity>
     </application>
 

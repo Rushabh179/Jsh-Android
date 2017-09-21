@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("...........","create");
         super.onCreate(savedInstanceState);
 
-        i=new Intent(LoginActivity.this,AdminHome.class);
+        i=new Intent(LoginActivity.this,Home.class);
 
         checkLogIn();
         setContentView(R.layout.activity_login);
