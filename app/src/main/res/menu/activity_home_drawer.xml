@@ -8,23 +8,24 @@
             android:title="@string/nav_opt1"/>
         <item
             android:id="@+id/nav_opt2"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_person"
             android:title="@string/nav_opt2"/>
         <item
             android:id="@+id/nav_opt3"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_faqs"
             android:title="@string/nav_opt3"/>
         <item
             android:id="@+id/nav_opt4"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_about"
             android:title="@string/nav_opt4"/>
 
         <item
             android:id="@+id/nav_opt5"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_out"
             android:title="@string/nav_opt5"/>
     </group>
 
+    <!--
     <item android:title="Additional functionalities">
         <menu>
             <item
@@ -36,5 +37,5 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send"/>
         </menu>
-    </item>
+    </item>-->
 </menu>
