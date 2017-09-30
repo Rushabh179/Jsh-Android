@@ -34,5 +34,4 @@ public class UserCustomAdapter extends ArrayAdapter<String> {
 
         return customView;
     }
-
 }

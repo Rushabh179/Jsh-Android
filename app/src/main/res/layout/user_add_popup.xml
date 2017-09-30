@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/popup_element"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="#ffffff"
+              android:padding="50dp"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/uaEtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/uaEtName"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/uaEtId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/uaEtId"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/uaEtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/uaEtPassword"
+        android:inputType="textPersonName"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <RadioButton
+            android:id="@+id/uaRbAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="40dp"
+            android:paddingEnd="40dp"
+            android:text="Admin"
+            tools:ignore="HardcodedText"/>
+
+        <RadioButton
+            android:id="@+id/uaRbUser"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="User"
+            tools:ignore="HardcodedText"/>
+
+    </RadioGroup>
+
+</LinearLayout>

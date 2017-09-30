@@ -47,14 +47,11 @@ public class LoginAuthentication extends AsyncTask<String,Void,String> {
             StringBuilder sb = new StringBuilder();
             String line;
 
-            // Read Server Response
             int i=0;
             line = reader.readLine();
             while (line != null && !line.equalsIgnoreCase("")) {
                 sb.append(line);
-                //list[i]=sb.toString();
                 line = reader.readLine();
-                i++;
             }
             return sb.toString();
 

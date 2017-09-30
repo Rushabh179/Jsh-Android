@@ -58,6 +58,13 @@ public class Home extends AppCompatActivity
             }
         });
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRoom();
+            }
+        });
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -114,16 +121,17 @@ public class Home extends AppCompatActivity
 
         if (id == R.id.nav_opt1) {//Account setup
             startActivity(new Intent(this,AccountSetup.class));
+            finish();
         }
         else if (id == R.id.nav_opt2) {//Users
             startActivity(new Intent(this,Users.class));
+            finish();
         }
         else if (id == R.id.nav_opt3) {//FAQs
 
         } else if (id == R.id.nav_opt4) {//About
 
         } else if (id == R.id.nav_opt5) {//Logout
-            //sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
             editor = sharedPrefs.edit();
             editor.putBoolean("loggedInState", false);
             editor.apply();
@@ -138,6 +146,10 @@ public class Home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    void addRoom() {
+
     }
 
     @Override

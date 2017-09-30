@@ -4,10 +4,8 @@ import android.os.AsyncTask;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 
 /**
  * Created by Rushabh on 30-Sep-17.
@@ -33,13 +31,10 @@ public class UserNameList extends AsyncTask<String,Void,String> {
             String line;
 
             // Read Server Response
-            int i=0;
             line = reader.readLine();
             while (line != null && !line.equalsIgnoreCase("")) {
                 sb.append(line);
-                //list[i]=sb.toString();
                 line = reader.readLine();
-                i++;
             }
             return sb.toString();
 

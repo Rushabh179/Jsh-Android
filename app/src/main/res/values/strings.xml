@@ -36,6 +36,9 @@
     <string name="title_activity_users">Users</string>
     <string name="title_activity_account_setup">AccountSetup</string>
     <string name="asEtNameHint">Enter name</string>
+    <string name="uaEtName">Name</string>
+    <string name="uaEtId">Set Id</string>
+    <string name="uaEtPassword">Set Password</string>
 
 </resources>
 
