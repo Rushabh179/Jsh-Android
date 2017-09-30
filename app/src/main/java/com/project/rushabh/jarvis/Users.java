@@ -10,9 +10,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class Users extends AppCompatActivity {
 
@@ -30,7 +32,16 @@ public class Users extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ListView userListView = (ListView) findViewById(R.id.userListView);
+
+        try {
+            String names[] = new UserNameList().execute().get().split(" ");
+            ListView userListView = (ListView) findViewById(R.id.userListView);
+            ListAdapter userAdapter=new UserCustomAdapter(this,names);
+            userListView.setAdapter(userAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
