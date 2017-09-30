@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Objects;
 
 /**
  * A login screen that offers login via id and password.
@@ -127,10 +126,11 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             try {
+                Log.i("aa............bb",new LoginAuthentication().execute(id, password).get());
                 String[] rolenumber = new LoginAuthentication().execute(id, password).get().split(" ");
                 Log.i("aa............aa",new LoginAuthentication().execute(id, password).get());
-                if (Objects.equals(rolenumber[0], "0") || Objects.equals(rolenumber[0], "1")){
-                    //loggedIn();
+
+                if(rolenumber.length!=0){
                     startActivity(i);
                     editor = sharedPrefs.edit();
                     editor.putBoolean("loggedInState", true);
@@ -207,7 +207,4 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void loggedIn(){
-
-    }
 }
