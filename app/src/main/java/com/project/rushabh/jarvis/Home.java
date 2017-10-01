@@ -18,6 +18,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.util.Objects;
 
@@ -42,6 +44,16 @@ public class Home extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         i=new Intent(this,LoginActivity.class);
+
+        try {
+            String names[] = new HomeRoomList().execute().get().split("  ");
+            ListView hrListView = (ListView) findViewById(R.id.hrListView);
+            ListAdapter hrAdapter = new HomeRoomCustomAdapter(this, names);
+            hrListView.setAdapter(hrAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);

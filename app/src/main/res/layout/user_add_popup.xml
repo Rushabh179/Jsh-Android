@@ -4,9 +4,20 @@
               android:id="@+id/popup_element"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:background="#ffffff"
+              android:background="#fff"
               android:orientation="vertical"
               android:padding="30dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:background="#339e919a"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="Add User"
+        tools:ignore="HardcodedText"/>
 
     <EditText
         android:id="@+id/uaEtName"

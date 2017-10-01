@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/userTvName"
+        android:id="@+id/hrTvName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_margin="5dp"
-        android:textColor="#c9c968"
+        android:textColor="#257bc6"
         android:textStyle="bold"
-        android:textSize="30sp"
+        android:paddingStart="20dp"
+        android:paddingLeft="20dp"
+        android:textSize="40sp"
         android:text="Name"
-        tools:ignore="HardcodedText"/>
-
-    <TextView
-        android:id="@+id/userTvId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_margin="5dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
-        android:text="Id"
+        android:fontFamily=""
         tools:ignore="HardcodedText"/>
 
 </LinearLayout>

@@ -10,9 +10,8 @@
     tools:showIn="@layout/app_bar_home">
 
     <ListView
-        android:id="@+id/myListView"
+        android:id="@+id/hrListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
 
 </RelativeLayout>

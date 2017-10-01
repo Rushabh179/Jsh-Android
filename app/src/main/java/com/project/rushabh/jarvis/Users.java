@@ -30,13 +30,12 @@ public class Users extends AppCompatActivity {
     private static final String APP_SHARED_PREFS = "preferences";
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
-    boolean isLoggedIn;
     String roleOfLogger;
+    boolean isLoggedIn;
 
     PopupWindow pw;
     EditText uaEtName,uaEtId,uaEtPassword;
     String name,id,password;
-
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -46,7 +45,6 @@ public class Users extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         try {
             String names[] = new UserNameList().execute().get().split(" ");
             ListView userListView = (ListView) findViewById(R.id.userListView);
@@ -55,7 +53,6 @@ public class Users extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
