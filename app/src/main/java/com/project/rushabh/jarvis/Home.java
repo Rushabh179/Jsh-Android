@@ -10,6 +10,8 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,10 +20,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import java.util.Objects;
+
+import static com.project.rushabh.jarvis.Users.applyDim;
+import static com.project.rushabh.jarvis.Users.clearDim;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +40,9 @@ public class Home extends AppCompatActivity
     SharedPreferences.Editor editor;
     boolean isLoggedIn;
     String roleOfLogger;
+
+    PopupWindow pw;
+    EditText arEtName;
 
     Intent i;
 
@@ -73,7 +85,7 @@ public class Home extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addRoom();
+                addRoom(v);
             }
         });
 
@@ -160,8 +172,30 @@ public class Home extends AppCompatActivity
         return true;
     }
 
-    void addRoom() {
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    private void addRoom(View v) {
+        try {
+            final ViewGroup root = (ViewGroup) getWindow().getDecorView().getRootView();
+            LayoutInflater inflater = (LayoutInflater) Home.this
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.home_room_add_popup,
+                    (ViewGroup) findViewById(R.id.popup_element));
+            pw = new PopupWindow(layout, 1000, 650, true);
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+            applyDim(root, (float) 0.5);
 
+            pw.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    clearDim(root);
+                }
+            });
+
+            arEtName = (EditText) layout.findViewById(R.id.arEtName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -202,5 +236,23 @@ public class Home extends AppCompatActivity
         if(!isLoggedIn){
             startActivity(i);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public void onCancelRa(View view) {
+        pw.dismiss();
+    }
+
+    public void onSaveRa(View view) {
+        String name = arEtName.getText().toString();
+        try {
+            Boolean a=new HomeRoomAdd().execute(name).get();
+            if(a){
+                Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        pw.dismiss();
     }
 }
