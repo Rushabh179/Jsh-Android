@@ -5,8 +5,8 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:background="#ffffff"
-              android:padding="50dp"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:padding="30dp">
 
     <EditText
         android:id="@+id/uaEtName"
@@ -35,15 +35,15 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/uaRbAdmin"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingRight="40dp"
             android:paddingEnd="40dp"
+            android:paddingRight="40dp"
             android:text="Admin"
             tools:ignore="HardcodedText"/>
 
@@ -55,5 +55,29 @@
             tools:ignore="HardcodedText"/>
 
     </RadioGroup>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <Button
+            android:id="@+id/uaBuCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#aef"
+            android:onClick="onCancelUa"
+            android:text="@string/uaBuCancel"/>
+
+        <Button
+            android:id="@+id/uaBuSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="#aef"
+            android:onClick="onSaveUa"
+            android:text="@string/uaBuSave"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

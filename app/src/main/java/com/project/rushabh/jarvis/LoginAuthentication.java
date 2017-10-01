@@ -47,7 +47,6 @@ public class LoginAuthentication extends AsyncTask<String,Void,String> {
             StringBuilder sb = new StringBuilder();
             String line;
 
-            int i=0;
             line = reader.readLine();
             while (line != null && !line.equalsIgnoreCase("")) {
                 sb.append(line);

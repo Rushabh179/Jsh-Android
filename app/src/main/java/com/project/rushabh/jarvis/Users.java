@@ -18,12 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroupOverlay;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import java.util.Objects;
-
 public class Users extends AppCompatActivity {
 
     private static final String APP_SHARED_PREFS = "preferences";
@@ -31,6 +32,10 @@ public class Users extends AppCompatActivity {
     SharedPreferences.Editor editor;
     boolean isLoggedIn;
     String roleOfLogger;
+
+    PopupWindow pw;
+    EditText uaEtName,uaEtId,uaEtPassword;
+    String name,id,password;
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -80,14 +85,11 @@ public class Users extends AppCompatActivity {
     private void addUser(View v) {
         try {
             final ViewGroup root = (ViewGroup) getWindow().getDecorView().getRootView();
-            //We need to get the instance of the LayoutInflater, use the context of this activity
             LayoutInflater inflater = (LayoutInflater) Users.this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //Inflate the view from a predefined XML layout
             View layout = inflater.inflate(R.layout.user_add_popup,
                     (ViewGroup) findViewById(R.id.popup_element));
-            PopupWindow pw = new PopupWindow(layout, 1000, 1000, true);
-            // display the popup in the center
+            pw = new PopupWindow(layout, 1000, 1200, true);
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
             applyDim(root, (float) 0.5);
 
@@ -97,6 +99,11 @@ public class Users extends AppCompatActivity {
                     clearDim(root);
                 }
             });
+
+            uaEtName = (EditText) layout.findViewById(R.id.uaEtName);
+            uaEtId = (EditText) layout.findViewById(R.id.uaEtId);
+            uaEtPassword = (EditText) layout.findViewById(R.id.uaEtPassword);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,5 +123,33 @@ public class Users extends AppCompatActivity {
     public static void clearDim(@NonNull ViewGroup parent) {
         ViewGroupOverlay overlay = parent.getOverlay();
         overlay.clear();
+    }
+
+    public void onSaveUa(View view) {
+        name = uaEtName.getText().toString();
+        id = uaEtId.getText().toString();
+        password = uaEtPassword.getText().toString();
+
+        if(id.length()<4){
+            Toast.makeText(this,R.string.error_invalid_id,Toast.LENGTH_SHORT).show();
+        }
+        else if (password.length()<4){
+            Toast.makeText(this,R.string.error_invalid_password,Toast.LENGTH_SHORT).show();
+        }
+        else {
+            try {
+                Boolean a=new UserAddInfo().execute(name,id,password).get();
+            if(a){
+                Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
+            }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            pw.dismiss();
+        }
+    }
+
+    public void onCancelUa(View view) {
+        pw.dismiss();
     }
 }

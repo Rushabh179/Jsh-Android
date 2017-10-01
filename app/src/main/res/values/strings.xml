@@ -39,6 +39,8 @@
     <string name="uaEtName">Name</string>
     <string name="uaEtId">Set Id</string>
     <string name="uaEtPassword">Set Password</string>
+    <string name="uaBuCancel">Cancel</string>
+    <string name="uaBuSave">Save</string>
 
 </resources>
 
