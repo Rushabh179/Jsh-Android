@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -41,6 +42,9 @@ public class Home extends AppCompatActivity
     boolean isLoggedIn;
     String roleOfLogger;
 
+    ListView hrListView;
+    static String[] names;
+
     PopupWindow pw;
     EditText arEtName;
 
@@ -48,7 +52,7 @@ public class Home extends AppCompatActivity
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         Log.i("...........2","create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -58,13 +62,23 @@ public class Home extends AppCompatActivity
         i=new Intent(this,LoginActivity.class);
 
         try {
-            String names[] = new HomeRoomList().execute().get().split("  ");
-            ListView hrListView = (ListView) findViewById(R.id.hrListView);
+            names = new HomeRoomList().execute().get().split("  ");
+            hrListView = (ListView) findViewById(R.id.hrListView);
             ListAdapter hrAdapter = new HomeRoomCustomAdapter(this, names);
             hrListView.setAdapter(hrAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        hrListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String item=String.valueOf(parent.getItemAtPosition(position));
+                Toast.makeText(Home.this,item,Toast.LENGTH_SHORT).show();
+                int room_id= (int) id;
+                startActivity(new Intent(Home.this,Appliances.class).putExtra("room_id",room_id));
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

@@ -41,6 +41,8 @@
     <string name="uaEtPassword">Set Password</string>
     <string name="uaBuCancel">Cancel</string>
     <string name="uaBuSave">Save</string>
+    <string name="title_activity_appliances">Appliances</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>
 

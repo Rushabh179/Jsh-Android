@@ -49,6 +49,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.project.rushabh.jarvis.Home"/>
         </activity>
+        <activity
+            android:name=".Appliances"
+            android:label="@string/title_activity_appliances"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.rushabh.jarvis.Home"/>
+        </activity>
     </application>
 
 </manifest>
