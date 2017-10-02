@@ -10,16 +10,16 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 /**
- * Created by Rushabh on 01-Oct-17.
+ * Created by Rushabh on 02-Oct-17.
  */
 
-public class HomeRoomAdd extends AsyncTask<String,Void,Boolean> {
+public class HomeRoomDelete extends AsyncTask<String,Void,Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
         try {
             String name = params[0];
 
-            String link = "http://192.168.1.36:8080/Jarvis/addroom.php";
+            String link = "http://192.168.1.36:8080/Jarvis/deleteroom.php";
             String data;
             data = URLEncoder.encode("name", "UTF-8") + "=" +
                     URLEncoder.encode(name, "UTF-8");
@@ -43,4 +43,5 @@ public class HomeRoomAdd extends AsyncTask<String,Void,Boolean> {
             return false;
         }
     }
+
 }

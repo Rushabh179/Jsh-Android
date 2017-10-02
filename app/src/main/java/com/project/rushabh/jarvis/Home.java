@@ -1,6 +1,7 @@
 package com.project.rushabh.jarvis;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -44,6 +46,7 @@ public class Home extends AppCompatActivity
 
     ListView hrListView;
     static String[] names;
+    String item;
 
     PopupWindow pw;
     EditText arEtName;
@@ -73,10 +76,19 @@ public class Home extends AppCompatActivity
         hrListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item=String.valueOf(parent.getItemAtPosition(position));
+                item=String.valueOf(parent.getItemAtPosition(position));
                 Toast.makeText(Home.this,item,Toast.LENGTH_SHORT).show();
                 int room_id= (int) id;
                 startActivity(new Intent(Home.this,Appliances.class).putExtra("room_id",room_id));
+            }
+        });
+
+        hrListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                item=String.valueOf(parent.getItemAtPosition(position));
+                deleteDialog(item);
+                return true;
             }
         });
 
@@ -113,20 +125,7 @@ public class Home extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public void onBackPressed() {
-        Log.i("...........2","backpressed");
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            Intent a = new Intent(Intent.ACTION_MAIN);
-            a.addCategory(Intent.CATEGORY_HOME);
-            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(a);
-            super.onBackPressed();
-        }
-    }
+
 
     /*
     @Override
@@ -150,6 +149,34 @@ public class Home extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }*/
+
+    private void deleteDialog(final String room_name) {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setTitle("Delete?");
+        dialog.setMessage("Are you sure want to delete this room?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    boolean isDeleted = new HomeRoomDelete().execute(room_name).get();
+                    if(isDeleted){
+                        Toast.makeText(Home.this,"Deleted",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+                startActivity(new Intent(Home.this,Home.class));
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -213,6 +240,49 @@ public class Home extends AppCompatActivity
         }
     }
 
+
+    public void checkLogin(){
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        isLoggedIn = sharedPrefs.getBoolean("loggedInState", false);
+        if(!isLoggedIn){
+            startActivity(i);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public void onCancelRa(View view) {
+        pw.dismiss();
+    }
+
+    public void onSaveRa(View view) {
+        String name = arEtName.getText().toString();
+        try {
+            Boolean a=new HomeRoomAdd().execute(name).get();
+            if(a){
+                Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        pw.dismiss();
+        startActivity(new Intent(this,Home.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.i("...........2","backpressed");
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
+            super.onBackPressed();
+        }
+    }
+
     @Override
     protected void onStart() {
         Log.i("...........2","start");
@@ -243,32 +313,5 @@ public class Home extends AppCompatActivity
     protected void onDestroy() {
         Log.i("...........2","destroy");
         super.onDestroy();
-    }
-
-    public void checkLogin(){
-        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        isLoggedIn = sharedPrefs.getBoolean("loggedInState", false);
-        if(!isLoggedIn){
-            startActivity(i);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public void onCancelRa(View view) {
-        pw.dismiss();
-    }
-
-    public void onSaveRa(View view) {
-        String name = arEtName.getText().toString();
-        try {
-            Boolean a=new HomeRoomAdd().execute(name).get();
-            if(a){
-                Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        pw.dismiss();
-        startActivity(new Intent(this,Home.class));
     }
 }
