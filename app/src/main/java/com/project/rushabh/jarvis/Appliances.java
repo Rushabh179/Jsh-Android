@@ -54,8 +54,8 @@ public class Appliances extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        id=getIntent().getIntExtra("room_id",0);
-        mViewPager.setCurrentItem(id);//To start from a particular tab
+        id=getIntent().getIntExtra("room_id",0);//To start from a particular tab
+        mViewPager.setCurrentItem(id);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);

@@ -63,6 +63,8 @@ public class Home extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         i=new Intent(this,LoginActivity.class);
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        roleOfLogger = sharedPrefs.getString("role", "");
 
         try {
             names = new HomeRoomList().execute().get().split("  ");
@@ -78,24 +80,23 @@ public class Home extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 item=String.valueOf(parent.getItemAtPosition(position));
                 Toast.makeText(Home.this,item,Toast.LENGTH_SHORT).show();
-                int room_id= (int) id;
-                startActivity(new Intent(Home.this,Appliances.class).putExtra("room_id",room_id));
+                startActivity(new Intent(Home.this,Appliances.class).putExtra("room_id",position));
             }
         });
 
         hrListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                item=String.valueOf(parent.getItemAtPosition(position));
-                deleteDialog(item);
+                if (Objects.equals(roleOfLogger, "0")){
+                    item=String.valueOf(parent.getItemAtPosition(position));
+                    deleteDialog(item);
+                }
                 return true;
             }
         });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        roleOfLogger = sharedPrefs.getString("role", "");
         if(Objects.equals(roleOfLogger, "1")){
             fab.setVisibility(View.GONE);
         }
@@ -150,33 +151,6 @@ public class Home extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }*/
 
-    private void deleteDialog(final String room_name) {
-        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
-        dialog.setTitle("Delete?");
-        dialog.setMessage("Are you sure want to delete this room?");
-        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try {
-                    boolean isDeleted = new HomeRoomDelete().execute(room_name).get();
-                    if(isDeleted){
-                        Toast.makeText(Home.this,"Deleted",Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                dialog.dismiss();
-                startActivity(new Intent(Home.this,Home.class));
-            }
-        });
-        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        dialog.show();
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -212,6 +186,36 @@ public class Home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void deleteDialog(final String room_name) {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setTitle("Delete?");
+        dialog.setMessage("Are you sure want to delete this room?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    boolean isDeleted = new HomeRoomDelete().execute(room_name).get();
+                    if(isDeleted){
+                        Toast.makeText(Home.this,"Deleted",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+                //overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -265,7 +269,9 @@ public class Home extends AppCompatActivity
             e.printStackTrace();
         }
         pw.dismiss();
-        startActivity(new Intent(this,Home.class));
+        //overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 
     @Override
