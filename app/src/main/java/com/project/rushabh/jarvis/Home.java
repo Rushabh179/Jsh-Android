@@ -157,7 +157,8 @@ public class Home extends AppCompatActivity
 
         } else if (id == R.id.nav_opt5) {//Logout
             editor = sharedPrefs.edit();
-            editor.putBoolean("loggedInState", false);
+            //editor.putBoolean("loggedInState", false);
+            editor.clear();
             editor.apply();
             startActivity(i);
 
@@ -254,5 +255,6 @@ public class Home extends AppCompatActivity
             e.printStackTrace();
         }
         pw.dismiss();
+        startActivity(new Intent(this,Home.class));
     }
 }
