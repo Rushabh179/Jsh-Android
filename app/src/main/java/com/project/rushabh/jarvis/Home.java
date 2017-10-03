@@ -68,6 +68,7 @@ public class Home extends AppCompatActivity
 
         try {
             names = new HomeRoomList().execute().get().split("  ");
+            //names = null;
             hrListView = (ListView) findViewById(R.id.hrListView);
             ListAdapter hrAdapter = new HomeRoomCustomAdapter(this, names);
             hrListView.setAdapter(hrAdapter);
@@ -80,7 +81,7 @@ public class Home extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 item=String.valueOf(parent.getItemAtPosition(position));
                 Toast.makeText(Home.this,item,Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Home.this,Appliances.class).putExtra("room_id",position));
+                startActivity(new Intent(Home.this,Appliances.class).putExtra("room_id",position).putExtra("room_name",item));
             }
         });
 

@@ -12,12 +12,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.TextView;
+import android.widget.GridView;
+import android.widget.ListAdapter;
 
 public class Appliances extends AppCompatActivity {
 
@@ -37,6 +36,7 @@ public class Appliances extends AppCompatActivity {
     private ViewPager mViewPager;
 
     int id;
+    static String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,7 @@ public class Appliances extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         id=getIntent().getIntExtra("room_id",0);//To start from a particular tab
+        name=getIntent().getStringExtra("room_name");
         mViewPager.setCurrentItem(id);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -72,7 +73,7 @@ public class Appliances extends AppCompatActivity {
     }
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_appliances, menu);
@@ -92,7 +93,7 @@ public class Appliances extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     /**
      * A placeholder fragment containing a simple view.
@@ -123,8 +124,22 @@ public class Appliances extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_appliances, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+            /*TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
+
+
+            try {
+                String items[] = new ApplianceList().execute(name).get().split("  ");
+                GridView appGridView = (GridView) rootView.findViewById(R.id.appGridView);
+                ListAdapter myAdapter=new ApplianceCustomAdapter(getContext(),items);
+                appGridView.setAdapter(myAdapter);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
             return rootView;
         }
     }
