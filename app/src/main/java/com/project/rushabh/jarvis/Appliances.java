@@ -17,6 +17,10 @@ import android.view.ViewGroup;
 
 import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.Toast;
+
+import java.util.concurrent.ExecutionException;
+
 
 public class Appliances extends AppCompatActivity {
 
@@ -37,6 +41,8 @@ public class Appliances extends AppCompatActivity {
 
     int id;
     static String name;
+    static String items;
+    static TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +63,36 @@ public class Appliances extends AppCompatActivity {
         id=getIntent().getIntExtra("room_id",0);//To start from a particular tab
         name=getIntent().getStringExtra("room_name");
         mViewPager.setCurrentItem(id);
+        try {
+            items = new ApplianceList().execute(name).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        /*tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                try {
+                    items = new ApplianceList().execute(tab.getText().toString()).get();
+                    //Toast.makeText(Appliances.this,items,Toast.LENGTH_SHORT).show();//TODO
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +104,7 @@ public class Appliances extends AppCompatActivity {
         });
 
     }
+
 
 
     /*@Override
@@ -123,22 +157,41 @@ public class Appliances extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_appliances, container, false);
+            final View rootView = inflater.inflate(R.layout.fragment_appliances, container, false);
 
             /*TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
 
+            GridView appGridView = (GridView) rootView.findViewById(R.id.appGridView);
+            ListAdapter myAdapter=new ApplianceCustomAdapter(getContext(),items.split("  "));
+            appGridView.setAdapter(myAdapter);
 
-            try {
-                String items[] = new ApplianceList().execute(name).get().split("  ");
-                GridView appGridView = (GridView) rootView.findViewById(R.id.appGridView);
-                ListAdapter myAdapter=new ApplianceCustomAdapter(getContext(),items);
-                appGridView.setAdapter(myAdapter);
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    try {
+                        items = new ApplianceList().execute(tab.getText().toString()).get();
+                        //Toast.makeText(getContext(),items,Toast.LENGTH_SHORT).show();
+                        GridView appGridView = (GridView) rootView.findViewById(R.id.appGridView);
+                        ListAdapter myAdapter=new ApplianceCustomAdapter(getContext(),items.split("  "));
+                        appGridView.setAdapter(myAdapter);
+                        //Toast.makeText(Appliances.this,items,Toast.LENGTH_SHORT).show();//TODO
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                }
 
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
 
             return rootView;
         }
