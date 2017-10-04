@@ -80,7 +80,9 @@ public class Home extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 item=String.valueOf(parent.getItemAtPosition(position));
                 Toast.makeText(Home.this,item,Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Home.this,Appliances.class).putExtra("room_id",position).putExtra("room_name",item));
+                startActivity(new Intent(Home.this,Appliances.class)
+                        .putExtra("room_id",position)
+                        .putExtra("room_name",item));
             }
         });
 

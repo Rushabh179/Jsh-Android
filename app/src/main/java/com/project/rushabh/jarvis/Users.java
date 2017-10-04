@@ -1,6 +1,7 @@
 package com.project.rushabh.jarvis;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroupOverlay;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -33,6 +36,9 @@ public class Users extends AppCompatActivity {
     String roleOfLogger;
     boolean isLoggedIn;
 
+    ListView userListView;
+    String item;
+
     PopupWindow pw;
     EditText uaEtName,uaEtId,uaEtPassword;
     String name,id,password;
@@ -47,12 +53,24 @@ public class Users extends AppCompatActivity {
 
         try {
             String names[] = new UserNameList().execute().get().split(" ");
-            ListView userListView = (ListView) findViewById(R.id.userListView);
+            userListView = (ListView) findViewById(R.id.userListView);
             ListAdapter userAdapter = new UserCustomAdapter(this, names);
             userListView.setAdapter(userAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        userListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (Objects.equals(roleOfLogger, "0")){
+                    item=String.valueOf(parent.getItemAtPosition(position));
+                    Toast.makeText(Users.this,item,Toast.LENGTH_SHORT).show();
+                    deleteDialog(item);
+                }
+                return true;
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
@@ -76,6 +94,36 @@ public class Users extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void deleteDialog(final String id) {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setTitle("Delete?");
+        dialog.setMessage("Are you sure want to delete this user?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    boolean isDeleted = new UserDelete().execute(id).get();
+                    if(isDeleted){
+                        Toast.makeText(Users.this,"Deleted",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+                //overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)

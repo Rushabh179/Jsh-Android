@@ -10,19 +10,19 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 /**
- * Created by Rushabh on 02-Oct-17.
+ * Created by Rushabh on 04-Oct-17.
  */
 
-public class HomeRoomDelete extends AsyncTask<String,Void,Boolean> {
+public class UserDelete extends AsyncTask<String,Void,Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
         try {
-            String name = params[0];
+            String id = params[0];
 
-            String link = "http://192.168.1.36:8080/Jarvis/deleteroom.php";
+            String link = "http://192.168.1.36:8080/Jarvis/deleteuser.php";
             String data;
-            data = URLEncoder.encode("name", "UTF-8") + "=" +
-                    URLEncoder.encode(name, "UTF-8");
+            data = URLEncoder.encode("id", "UTF-8") + "=" +
+                    URLEncoder.encode(id, "UTF-8");
 
             URL url = new URL(link);
             URLConnection conn = url.openConnection();
