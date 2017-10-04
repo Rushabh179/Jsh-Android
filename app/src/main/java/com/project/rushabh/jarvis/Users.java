@@ -52,7 +52,7 @@ public class Users extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         try {
-            String names[] = new UserNameList().execute().get().split(" ");
+            String names[] = new UserNameList().execute().get().split("  ");
             userListView = (ListView) findViewById(R.id.userListView);
             ListAdapter userAdapter = new UserCustomAdapter(this, names);
             userListView.setAdapter(userAdapter);

@@ -3,7 +3,6 @@ package com.project.rushabh.jarvis;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
@@ -30,7 +29,6 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import java.util.Objects;

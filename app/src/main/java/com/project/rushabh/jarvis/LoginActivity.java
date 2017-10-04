@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             try {
                 Log.i("aa............bb",new LoginAuthentication().execute(id, password).get());
-                String[] rolenumber = new LoginAuthentication().execute(id, password).get().split(" ");
+                String[] rolenumber = new LoginAuthentication().execute(id, password).get().split("  ");
                 Log.i("aa............aa",new LoginAuthentication().execute(id, password).get());
 
                 if(rolenumber.length!=0){
