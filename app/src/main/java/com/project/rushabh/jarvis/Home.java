@@ -42,10 +42,10 @@ public class Home extends AppCompatActivity
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
     boolean isLoggedIn;
-    String roleOfLogger;
+    static String roleOfLogger;
 
     ListView hrListView;
-    static String[] names;
+    static String[] room_names_list;
     String item;
 
     PopupWindow pw;
@@ -67,10 +67,9 @@ public class Home extends AppCompatActivity
         roleOfLogger = sharedPrefs.getString("role", "");
 
         try {
-            names = new HomeRoomList().execute().get().split("  ");
-            //names = null;
+            room_names_list = new HomeRoomList().execute().get().split("  ");
             hrListView = (ListView) findViewById(R.id.hrListView);
-            ListAdapter hrAdapter = new HomeRoomCustomAdapter(this, names);
+            ListAdapter hrAdapter = new HomeRoomCustomAdapter(this, room_names_list);
             hrListView.setAdapter(hrAdapter);
         } catch (Exception e) {
             e.printStackTrace();
@@ -254,11 +253,6 @@ public class Home extends AppCompatActivity
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public void onCancelRa(View view) {
-        pw.dismiss();
-    }
-
     public void onSaveRa(View view) {
         String name = arEtName.getText().toString();
         try {
@@ -273,6 +267,11 @@ public class Home extends AppCompatActivity
         //overridePendingTransition(0, 0);
         startActivity(getIntent());
         overridePendingTransition(0, 0);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public void onCancelRa(View view) {
+        pw.dismiss();
     }
 
     @Override

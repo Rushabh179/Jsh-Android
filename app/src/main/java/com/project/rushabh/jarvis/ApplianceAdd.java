@@ -10,19 +10,24 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 /**
- * Created by Rushabh on 01-Oct-17.
+ * Created by Rushabh on 04-Oct-17.
  */
 
-public class HomeRoomAdd extends AsyncTask<String,Void,Boolean> {
+public class ApplianceAdd extends AsyncTask<String,Void,Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
         try {
-            String name = params[0];
+            String room_name,device_name;
+            room_name = params[0];
+            device_name = params[1];
 
-            String link = "http://192.168.1.36:8080/Jarvis/addroom.php";
+
+            String link = "http://192.168.1.36:8080/Jarvis/adddevice.php";
             String data;
-            data = URLEncoder.encode("name", "UTF-8") + "=" +
-                    URLEncoder.encode(name, "UTF-8");
+            data = URLEncoder.encode("room_name", "UTF-8") + "=" +
+                    URLEncoder.encode(room_name, "UTF-8");
+            data += "&" +URLEncoder.encode("device_name", "UTF-8") + "=" +
+                    URLEncoder.encode(device_name, "UTF-8");
 
             URL url = new URL(link);
             URLConnection conn = url.openConnection();

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/popup_element"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="#fff"
+              android:orientation="vertical"
+              android:padding="30dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:background="#339e919a"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="Add Appliance"
+        tools:ignore="HardcodedText"/>
+
+    <Spinner
+        android:id="@+id/aaSpinner"
+        android:spinnerMode="dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <EditText
+        android:id="@+id/aaEtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/uaEtName"
+        android:inputType="textPersonName"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+
+        <TextView
+            android:id="@+id/aaTvSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="#fff"
+            android:textSize="20sp"
+            android:onClick="onSaveAa"
+            android:text="@string/uaBuSave"/>
+
+        <TextView
+            android:id="@+id/aaTvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@id/aaTvSave"
+            android:layout_marginRight="20dp"
+            android:background="#fff"
+            android:onClick="onCancelAa"
+            android:text="@string/uaBuCancel"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

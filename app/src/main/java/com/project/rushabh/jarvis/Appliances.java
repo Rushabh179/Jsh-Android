@@ -1,5 +1,9 @@
 package com.project.rushabh.jarvis;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,18 +15,27 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.concurrent.ExecutionException;
+import java.util.Objects;
+
+import static com.project.rushabh.jarvis.Users.applyDim;
+import static com.project.rushabh.jarvis.Users.clearDim;
 
 
-public class Appliances extends AppCompatActivity {
+public class Appliances extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -40,10 +53,17 @@ public class Appliances extends AppCompatActivity {
     private ViewPager mViewPager;
 
     int id;
-    static String name;
+    static String room_name;
     static String items;
+    @SuppressLint("StaticFieldLeak")
     static TabLayout tabLayout;
 
+    PopupWindow pw;
+    Spinner aaSpinner;
+    EditText aaEtName;
+    String room_selected_spinner;
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +81,10 @@ public class Appliances extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         id=getIntent().getIntExtra("room_id",0);//To start from a particular tab
-        name=getIntent().getStringExtra("room_name");
+        room_name=getIntent().getStringExtra("room_name");
         mViewPager.setCurrentItem(id);
         try {
-            items = new ApplianceList().execute(name).get();
+            items = new ApplianceList().execute(room_name).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,17 +115,88 @@ public class Appliances extends AppCompatActivity {
         });*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if(Objects.equals(Home.roleOfLogger, "1")){
+            fab.setVisibility(View.GONE);
+        }
+        fab.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View view) {
+                Snackbar.make(view, "Add Appliance", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return true;
+            }
+        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                addAppliance(view);
             }
         });
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    private void addAppliance(View v) {
+        try {
+            final ViewGroup root = (ViewGroup) getWindow().getDecorView().getRootView();
+            LayoutInflater inflater = (LayoutInflater) Appliances.this
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.appliance_add_popup,
+                    (ViewGroup) findViewById(R.id.popup_element));
+            pw = new PopupWindow(layout, 1000, 750, true);
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+            applyDim(root, (float) 0.5);
 
+            pw.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    clearDim(root);
+                }
+            });
+
+            aaSpinner = (Spinner) layout.findViewById(R.id.aaSpinner);
+            aaSpinner.setOnItemSelectedListener(this);
+            ArrayAdapter<String> aa = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Home.room_names_list);
+            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            aaSpinner.setAdapter(aa);
+            aaEtName = (EditText) layout.findViewById(R.id.aaEtName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(getApplicationContext() ,Home.room_names_list[position] ,Toast.LENGTH_LONG).show();
+        room_selected_spinner = Home.room_names_list[position];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void onSaveAa(View view) {
+        String app_name = aaEtName.getText().toString();
+        try {
+            Boolean a=new ApplianceAdd().execute(room_selected_spinner,app_name).get();
+            if(a){
+                Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        pw.dismiss();
+        //overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
+
+    public void onCancelAa(View view) {
+        pw.dismiss();
+    }
 
     /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -171,7 +262,6 @@ public class Appliances extends AppCompatActivity {
                 public void onTabSelected(TabLayout.Tab tab) {
                     try {
                         items = new ApplianceList().execute(tab.getText().toString()).get();
-                        //Toast.makeText(getContext(),items,Toast.LENGTH_SHORT).show();
                         GridView appGridView = (GridView) rootView.findViewById(R.id.appGridView);
                         ListAdapter myAdapter=new ApplianceCustomAdapter(getContext(),items.split("  "));
                         appGridView.setAdapter(myAdapter);
@@ -192,7 +282,6 @@ public class Appliances extends AppCompatActivity {
 
                 }
             });
-
             return rootView;
         }
     }
@@ -217,7 +306,7 @@ public class Appliances extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show total pages.
-            return Home.names.length;
+            return Home.room_names_list.length;
         }
 
         @Override
@@ -231,7 +320,7 @@ public class Appliances extends AppCompatActivity {
                     return "SECTION 3";
             }*/
             try {
-                return Home.names[position];
+                return Home.room_names_list[position];
             }
             catch (Exception e){
                 e.printStackTrace();
