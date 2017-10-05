@@ -29,6 +29,7 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
@@ -89,11 +90,6 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
         room_id=getIntent().getIntExtra("room_id",0);//To start from a particular tab
         room_name=getIntent().getStringExtra("room_name");
         mViewPager.setCurrentItem(room_id);
-        try {
-            items = new ApplianceList().execute(room_name).get().split("  ");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -221,8 +217,16 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
 
             appGridView = (GridView) rootView.findViewById(R.id.appGridView);
-            ListAdapter myAdapter=new ApplianceCustomAdapter(getContext(),items);
-            appGridView.setAdapter(myAdapter);
+            try {
+                items = new ApplianceList().execute(room_name).get().split("  ");
+                if(items[0].isEmpty()){
+                    items[0]="Add appliances to begin";
+                }
+                ListAdapter myAdapter=new ApplianceCustomAdapter(getContext(),items);
+                appGridView.setAdapter(myAdapter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
@@ -231,7 +235,9 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
                     room_id = tab.getPosition();
                     try {
                         items = new ApplianceList().execute(room_name).get().split("  ");
-                        GridView appGridView = (GridView) rootView.findViewById(R.id.appGridView);
+                        if(items[0].isEmpty()){
+                            items[0]="Add an appliance to begin";
+                        }
                         ListAdapter myAdapter=new ApplianceCustomAdapter(getContext(),items);
                         appGridView.setAdapter(myAdapter);
                         //Toast.makeText(Appliances.this,items,Toast.LENGTH_SHORT).show();//TODO
@@ -259,8 +265,10 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
             });
 
             appGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                    if(Objects.equals(Home.roleOfLogger, "0")){
                     //deleteAppliance();
                     Toast.makeText(getContext(),"room_id"+Integer.valueOf(room_id).toString(),Toast.LENGTH_SHORT).show();
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
@@ -288,6 +296,7 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
                         }
                     });
                     dialog.show();
+                    }
                     return true;
                 }
             });
