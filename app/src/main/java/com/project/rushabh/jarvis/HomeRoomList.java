@@ -17,7 +17,7 @@ public class HomeRoomList extends AsyncTask <String,Void,String> {
     protected String doInBackground(String... params) {
         try {
 
-            String link = "http://192.168.43.101:8080/Jarvis/roomlist.php";
+            String link = LinkSet.link+"roomlist.php";
 
             URL url = new URL(link);
             URLConnection conn = url.openConnection();

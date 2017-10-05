@@ -19,7 +19,7 @@ public class HomeRoomDelete extends AsyncTask<String,Void,Boolean> {
         try {
             String name = params[0];
 
-            String link = "http://192.168.43.101:8080/Jarvis/deleteroom.php";
+            String link = LinkSet.link+"deleteroom.php";
             String data;
             data = URLEncoder.encode("name", "UTF-8") + "=" +
                     URLEncoder.encode(name, "UTF-8");

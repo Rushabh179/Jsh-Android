@@ -21,7 +21,7 @@ public class ApplianceDelete extends AsyncTask<String,Void,Boolean> {
             room_name = params[0];
             device_name = params[1];
 
-            String link = "http://192.168.43.101:8080/Jarvis/deletedevice.php";
+            String link = LinkSet.link+"deletedevice.php";
             String data;
             data = URLEncoder.encode("room_name", "UTF-8") + "=" +
                     URLEncoder.encode(room_name, "UTF-8");

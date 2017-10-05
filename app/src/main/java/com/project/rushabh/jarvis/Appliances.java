@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -32,12 +33,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import static com.project.rushabh.jarvis.Users.applyDim;
 import static com.project.rushabh.jarvis.Users.clearDim;
 
 
-public class Appliances extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Appliances extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -47,12 +49,12 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private static SectionsPagerAdapter mSectionsPagerAdapter;
+   // private static SectionsPagerAdapter mSectionsPagerAdapter; TODO
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    @SuppressLint("StaticFieldLeak")
+    /*@SuppressLint("StaticFieldLeak") TODO
     static ViewPager mViewPager;
 
     static int room_id;
@@ -67,7 +69,10 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
     PopupWindow pw;
     Spinner aaSpinner;
     EditText aaEtName;
-    String room_selected_spinner;
+    String room_selected_spinner;*/
+    static int room_id;
+
+    FragmentPagerAdapter adapterViewPager;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -78,8 +83,21 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ViewPager vpPager = (ViewPager) findViewById(R.id.container);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(adapterViewPager);
+
+        room_id=getIntent().getIntExtra("room_id",0);
+        vpPager.setCurrentItem(room_id);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(vpPager);
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+        /*TODO
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -112,10 +130,10 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
                 addAppliance(view);
             }
         });
-
+        */////////
     }
 
-
+/*Todo//////
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void addAppliance(View v) {
         try {
@@ -179,17 +197,17 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
 
     public void onCancelAa(View view) {
         pw.dismiss();
-    }
+    }*/
 
-    /**
+    /**TODO
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    /*public static class PlaceholderFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+      /*  private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
         }
@@ -198,12 +216,17 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+     /*   public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
         }
 
         @Override
@@ -214,7 +237,7 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
             /*TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
 
-            appGridView = (GridView) rootView.findViewById(R.id.appGridView);
+        /*    appGridView = (GridView) rootView.findViewById(R.id.appGridView);
             try {
                 items = new ApplianceList().execute(room_name).get().split("  ");
                 if(items[0].isEmpty()){
@@ -238,7 +261,7 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
                         }
                         ListAdapter myAdapter=new ApplianceCustomAdapter(getContext(),items);
                         appGridView.setAdapter(myAdapter);
-                        //Toast.makeText(Appliances.this,items,Toast.LENGTH_SHORT).show();//TODO
+                        //Toast.makeText(Appliances.this,items,Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -246,11 +269,26 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
-
                 }
 
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
+                }
+            });
+
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    Toast.makeText(getContext(),"The page changed",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
                 }
             });
@@ -307,13 +345,67 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
             });
             return rootView;
         }
+    }*/
+
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+        //private static int NUM_ITEMS = 3;
+
+        public MyPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return Home.room_names_list.length;
+            //return NUM_ITEMS;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            /*switch (position) {
+                case 0: // Fragment # 0 - This will show FirstFragment
+                    return FirstFragment.newInstance(position, "Page # 1");
+                case 1: // Fragment # 0 - This will show FirstFragment different title
+                    return FirstFragment.newInstance(position, "Page # 2");
+                case 2: // Fragment # 1 - This will show SecondFragment
+                    return FirstFragment.newInstance(position, "Page # 3");
+                case 3: // Fragment # 1 - This will show SecondFragment
+                    return FirstFragment.newInstance(position, "Page # 3");
+                default:
+                    return null;*/
+            String items = null;
+            try {
+                items=new ApplianceList().execute(Home.room_names_list[position]).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+                return FirstFragment.newInstance(items);
+
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            try {
+                return Home.room_names_list[position];
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
+            //return "Page " + position;
+        }
+
     }
 
-    /**
+
+    /**TODO
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    /*public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -342,5 +434,5 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
                 return null;
             }
         }
-    }
+    }*/
 }
