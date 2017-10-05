@@ -29,7 +29,6 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
@@ -182,7 +181,6 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
         pw.dismiss();
     }
 
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -260,7 +258,14 @@ public class Appliances extends AppCompatActivity implements AdapterView.OnItemS
             appGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                    try {
+                        boolean isChanged = new ChangeStatus().execute(position).get();
+                        if(isChanged){
+                            Toast.makeText(getContext(),"Done",Toast.LENGTH_SHORT).show();
+                        }//
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 

@@ -17,7 +17,7 @@ public class UserNameList extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... params) {
         try {
 
-            String link = "http://192.168.1.36:8080/Jarvis/userlist.php";
+            String link = "http://192.168.43.101:8080/Jarvis/usernamelist.php";
 
             URL url = new URL(link);
             URLConnection conn = url.openConnection();

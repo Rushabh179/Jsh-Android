@@ -23,7 +23,7 @@ public class UserAddInfo extends AsyncTask<String,Void,Boolean> {
             id = params[1];
             password = params[2];
 
-            String link = "http://192.168.1.36:8080/Jarvis/adduser.php";
+            String link = "http://192.168.43.101:8080/Jarvis/adduser.php";
             String data;
             data = URLEncoder.encode("name", "UTF-8") + "=" +
                     URLEncoder.encode(name, "UTF-8");

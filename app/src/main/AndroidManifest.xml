@@ -57,6 +57,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.project.rushabh.jarvis.Home"/>
         </activity>
+        <activity
+            android:name=".Faq"
+            android:label="@string/title_activity_faq"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.rushabh.jarvis.Home"/>
+        </activity>
+        <activity
+            android:name=".About"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.rushabh.jarvis.Home"/>
+        </activity>
     </application>
 
 </manifest>

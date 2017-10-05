@@ -19,7 +19,7 @@ public class UserDelete extends AsyncTask<String,Void,Boolean> {
         try {
             String id = params[0];
 
-            String link = "http://192.168.1.36:8080/Jarvis/deleteuser.php";
+            String link = "http://192.168.43.101:8080/Jarvis/deleteuser.php";
             String data;
             data = URLEncoder.encode("id", "UTF-8") + "=" +
                     URLEncoder.encode(id, "UTF-8");

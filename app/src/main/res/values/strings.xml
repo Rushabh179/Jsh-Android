@@ -43,6 +43,9 @@
     <string name="uaBuSave">Save</string>
     <string name="title_activity_appliances">Appliances</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="asTvOldPassword">Old Password:</string>
+    <string name="title_activity_faq">Faq</string>
+    <string name="title_activity_about">About</string>
 
 </resources>
 

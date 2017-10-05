@@ -1,5 +1,6 @@
 package com.project.rushabh.jarvis;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -10,19 +11,21 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 /**
- * Created by Rushabh on 02-Oct-17.
+ * Created by Rushabh on 05-Oct-17.
  */
 
-public class HomeRoomDelete extends AsyncTask<String,Void,Boolean> {
-    @Override
-    protected Boolean doInBackground(String... params) {
-        try {
-            String name = params[0];
+public class ChangeStatus extends AsyncTask<Integer,Void,Boolean> {
 
-            String link = "http://192.168.43.101:8080/Jarvis/deleteroom.php";
+    @Override
+    protected Boolean doInBackground(Integer... params) {
+        try {
+
+            Integer val = params[0];
+
+            String link = "http://192.168.43.214/serr.php";
             String data;
-            data = URLEncoder.encode("name", "UTF-8") + "=" +
-                    URLEncoder.encode(name, "UTF-8");
+            data = URLEncoder.encode("val", "UTF-8") + "=" +
+                    URLEncoder.encode(String.valueOf(val), "UTF-8");
 
             URL url = new URL(link);
             URLConnection conn = url.openConnection();

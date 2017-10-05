@@ -191,6 +191,8 @@ public class Users extends AppCompatActivity {
                 e.printStackTrace();
             }
             pw.dismiss();
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
         }
     }
 

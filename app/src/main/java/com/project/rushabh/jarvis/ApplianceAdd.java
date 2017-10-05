@@ -22,7 +22,7 @@ public class ApplianceAdd extends AsyncTask<String,Void,Boolean> {
             device_name = params[1];
 
 
-            String link = "http://192.168.1.36:8080/Jarvis/adddevice.php";
+            String link = "http://192.168.43.101:8080/Jarvis/adddevice.php";
             String data;
             data = URLEncoder.encode("room_name", "UTF-8") + "=" +
                     URLEncoder.encode(room_name, "UTF-8");

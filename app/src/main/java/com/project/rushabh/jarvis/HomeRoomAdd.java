@@ -19,7 +19,7 @@ public class HomeRoomAdd extends AsyncTask<String,Void,Boolean> {
         try {
             String name = params[0];
 
-            String link = "http://192.168.1.36:8080/Jarvis/addroom.php";
+            String link = "http://192.168.43.101:8080/Jarvis/addroom.php";
             String data;
             data = URLEncoder.encode("name", "UTF-8") + "=" +
                     URLEncoder.encode(name, "UTF-8");

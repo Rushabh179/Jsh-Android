@@ -169,9 +169,11 @@ public class Home extends AppCompatActivity
             finish();
         }
         else if (id == R.id.nav_opt3) {//FAQs
-
+            startActivity(new Intent(this,Faq.class));
+            finish();
         } else if (id == R.id.nav_opt4) {//About
-
+            startActivity(new Intent(this,About.class));
+            finish();
         } else if (id == R.id.nav_opt5) {//Logout
             editor = sharedPrefs.edit();
             //editor.putBoolean("loggedInState", false);
