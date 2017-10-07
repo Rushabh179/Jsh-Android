@@ -6,6 +6,7 @@ package com.project.rushabh.jarvis;
 
 public class LinkSet {
 
+    //static String link="http://localhost:8080/Jarvis/";
     static String link="http://192.168.43.101:8080/Jarvis/";
 
 }

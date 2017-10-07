@@ -14,10 +14,10 @@ import java.net.URLEncoder;
  * Created by Rushabh on 05-Oct-17.
  */
 
-public class ChangeStatus extends AsyncTask<Integer,Void,Boolean> {
+public class ChangeStatus extends AsyncTask<Integer,Void,String> {
 
     @Override
-    protected Boolean doInBackground(Integer... params) {
+    protected String doInBackground(Integer... params) {
         try {
 
             Integer val = params[0];
@@ -39,11 +39,18 @@ public class ChangeStatus extends AsyncTask<Integer,Void,Boolean> {
             BufferedReader reader = new BufferedReader(new
                     InputStreamReader(conn.getInputStream()));
 
-            return reader != null;
+            StringBuilder sb = new StringBuilder();
+            String line;
+
+            line = reader.readLine();
+            while (line != null && !line.equalsIgnoreCase("")) {
+                sb.append(line);
+                line = reader.readLine();
+            }
+            return sb.toString();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            return e.toString();
         }
     }
 }

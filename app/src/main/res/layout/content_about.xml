@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,4 +9,25 @@
     tools:context="com.project.rushabh.jarvis.About"
     tools:showIn="@layout/activity_about">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/aboutTvContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:text="          Jarvis SmartHome is a Wi-Fi connected centralized system, which needs to establish the hardware only once to connect switches of the rooms, bathrooms, kitchen, etc. to the network. The user can then configure the switches via the application downloaded in their tablets or mobile phones as they wish."
+        />
+
+    <TextView
+        android:id="@+id/aboutTvContact"
+        android:layout_below="@+id/aboutTvContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:text="Contact_info:
+ Phone no.: 9409321116,9722548964
+ e-mail.:  modi.rushabh179@gmail.com,
+                 neel.popat369@gmail.com   "/>
+
+</RelativeLayout>

@@ -27,7 +27,7 @@
 
     <string name="adTvName">Name:</string>
     <string name="asTvId">Id:</string>
-    <string name="asTvPassword">Password:</string>
+    <string name="asTvPassword">New Password:</string>
     <string name="asBuSave">Save</string>
     <string name="asBuCancel">Cancel</string>
 

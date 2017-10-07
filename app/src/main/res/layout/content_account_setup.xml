@@ -93,19 +93,20 @@
         android:inputType="textPassword"/>
 
     <Button
-        android:id="@+id/asBuSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="101dp"
-        android:text="@string/asBuSave"/>
-
-    <Button
         android:id="@+id/asBuCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="35dp"
         android:layout_marginRight="35dp"
+        android:onClick="asCancelBuClicked"
         android:text="@string/asBuCancel"/>
 
+    <Button
+        android:id="@+id/asBuSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="101dp"
+        android:onClick="asSaveBuClicked"
+        android:text="@string/asBuSave"/>
 
 </GridLayout>
