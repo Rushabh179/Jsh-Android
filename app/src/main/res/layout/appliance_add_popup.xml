@@ -25,7 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-
     <EditText
         android:id="@+id/aaEtName"
         android:layout_width="match_parent"
