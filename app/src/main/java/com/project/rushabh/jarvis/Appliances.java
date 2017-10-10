@@ -68,22 +68,22 @@ public class Appliances extends AppCompatActivity {
 
         //TODO: set sharedpreferences relating to room_id
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        selectedtab=sharedPrefs.getInt("selectedtab",0);
+        selectedtab = sharedPrefs.getInt("selectedtab", 0);
         vpPager.setCurrentItem(selectedtab);
 
 
-        room_id=getIntent().getIntExtra("room_id",0);
-        room_name=getIntent().getStringExtra("room_name");
+        room_id = getIntent().getIntExtra("room_id", 0);
+        room_name = getIntent().getStringExtra("room_name");
         vpPager.setCurrentItem(room_id);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(vpPager);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if(Objects.equals(Home.roleOfLogger, "1")){
+        if (Objects.equals(Home.roleOfLogger, "1")) {
             fab.setVisibility(View.GONE);
         }
-        fab.setOnLongClickListener(new View.OnLongClickListener(){
+        fab.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 Snackbar.make(view, "Add Appliance", Snackbar.LENGTH_LONG)
@@ -102,7 +102,7 @@ public class Appliances extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                room_name=tab.getText().toString();
+                room_name = tab.getText().toString();
             }
 
             @Override
@@ -153,9 +153,9 @@ public class Appliances extends AppCompatActivity {
     public void onSaveAa(View view) {
         String app_name = aaEtName.getText().toString();
         try {
-            Boolean a=new ApplianceAdd().execute(room_selected_spinner,app_name).get();
-            if(a){
-                Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
+            Boolean a = new ApplianceAdd().execute(room_selected_spinner, app_name).get();
+            if (a) {
+                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,9 +163,9 @@ public class Appliances extends AppCompatActivity {
         pw.dismiss();
         //overridePendingTransition(0, 0);
         editor = sharedPrefs.edit();
-        selectedtab=tabLayout.getSelectedTabPosition(); // or something else depending on your tab widget
-        editor.putInt("selectedtab",selectedtab).apply();
-        editor.putBoolean("isrefresh",true);
+        selectedtab = tabLayout.getSelectedTabPosition(); // or something else depending on your tab widget
+        editor.putInt("selectedtab", selectedtab).apply();
+        editor.putBoolean("isrefresh", true);
         startActivity(getIntent());
         overridePendingTransition(0, 0);
     }
@@ -191,11 +191,11 @@ public class Appliances extends AppCompatActivity {
         public Fragment getItem(int position) {
             String items = null;
             try {
-                items=new ApplianceList().execute(Home.room_names_list[position]).get();
+                items = new ApplianceList().execute(Home.room_names_list[position]).get();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-                return FirstFragment.newInstance(items);
+            return FirstFragment.newInstance(items);
 
         }
 
@@ -204,8 +204,7 @@ public class Appliances extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             try {
                 return Home.room_names_list[position];
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
