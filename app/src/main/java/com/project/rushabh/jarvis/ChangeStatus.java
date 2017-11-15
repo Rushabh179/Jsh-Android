@@ -1,6 +1,5 @@
 package com.project.rushabh.jarvis;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -22,7 +21,7 @@ public class ChangeStatus extends AsyncTask<Integer,Void,String> {
 
             Integer val = params[0];
 
-            String link = "http://192.168.43.214/serr.php";
+            String link = LinkSet.link+"serr.php";
             String data;
             data = URLEncoder.encode("val", "UTF-8") + "=" +
                     URLEncoder.encode(String.valueOf(val), "UTF-8");
