@@ -58,9 +58,10 @@ public class FirstFragment extends Fragment {
             ListAdapter myAdapter = new ApplianceCustomAdapter(getContext(), items);
             appGridView.setAdapter(myAdapter);
         }
-        if(tabLayout.getSelectedTabPosition()==0) {
+        //if(tabLayout.getSelectedTabPosition()==1) {
             temp = items.length;
-        }
+        //}
+        //Toast.makeText(getContext(),"tab: "+Integer.toString(temp),Toast.LENGTH_SHORT).show();
         appGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -73,18 +74,14 @@ public class FirstFragment extends Fragment {
                     }
                     else if (tabLayout.getSelectedTabPosition()==1){
                         //Toast.makeText(getContext(),Integer.toString(position+temp),Toast.LENGTH_SHORT).show();
-                        if(position%2==0){
-                            position=8;
-                        }
-                        else {
-                            position=9;
-                        }
+                        position+=8;
                         isChanged = new ChangeStatus().execute(position).get();
                     }
                     else {
-                        isChanged = new ChangeStatus().execute(position).get();
+                        isChanged = new ChangeStatus().execute(position+Appliances.appliancesPerRoom[tabLayout.getSelectedTabPosition()-1]).get();
                     }
-                    //Toast.makeText(getContext(),isChanged,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),isChanged,Toast.LENGTH_SHORT).show();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -107,6 +104,7 @@ public class FirstFragment extends Fragment {
                                 boolean isDeleted = new ApplianceDelete().execute(room_name,items[position]).get();
                                 if(isDeleted){
                                     Toast.makeText(getContext(),"Deleted",Toast.LENGTH_SHORT).show();
+                                    Appliances.appliancesPerRoom[tabLayout.getSelectedTabPosition()]--;
                                 }//
                             } catch (Exception e) {
                                 e.printStackTrace();

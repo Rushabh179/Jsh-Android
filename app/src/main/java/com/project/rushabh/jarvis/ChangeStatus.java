@@ -22,6 +22,7 @@ public class ChangeStatus extends AsyncTask<Integer,Void,String> {
             Integer val = params[0];
 
             String link = LinkSet.link+"serr.php";
+            //String link = "http://192.168.43.214/serr.php";
             String data;
             data = URLEncoder.encode("val", "UTF-8") + "=" +
                     URLEncoder.encode(String.valueOf(val), "UTF-8");

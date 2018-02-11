@@ -68,9 +68,15 @@ public class Home extends AppCompatActivity
 
         try {
             room_names_list = new HomeRoomList().execute().get().split("  ");
+            editor = sharedPrefs.edit();
+            editor.putInt("totalrooms",room_names_list.length);
+            editor.apply();
+            //Toast.makeText(Home.this,Integer.toString(sharedPrefs.getInt("totalrooms",0)),Toast.LENGTH_SHORT).show();
             hrListView = (ListView) findViewById(R.id.hrListView);
-            ListAdapter hrAdapter = new HomeRoomCustomAdapter(this, room_names_list);
-            hrListView.setAdapter(hrAdapter);
+            if (!room_names_list[0].isEmpty()) {
+                ListAdapter hrAdapter = new HomeRoomCustomAdapter(this, room_names_list);
+                hrListView.setAdapter(hrAdapter);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,31 +133,6 @@ public class Home extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-
-
-
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -263,6 +244,9 @@ public class Home extends AppCompatActivity
             Boolean a=new HomeRoomAdd().execute(name).get();
             if(a){
                 Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
+                editor = sharedPrefs.edit();
+                editor.putInt("room"+(sharedPrefs.getInt("totalrooms",0)-1),0);
+                editor.apply();
             }
         } catch (Exception e) {
             e.printStackTrace();

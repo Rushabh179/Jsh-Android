@@ -42,6 +42,8 @@ public class Appliances extends AppCompatActivity {
     static int room_id;
     static String room_name;
 
+    static int appliancesPerRoom[];
+
     ViewPager vpPager;
     @SuppressLint("StaticFieldLeak")
     static TabLayout tabLayout;
@@ -71,6 +73,13 @@ public class Appliances extends AppCompatActivity {
         selectedtab = sharedPrefs.getInt("selectedtab", 0);
         vpPager.setCurrentItem(selectedtab);
 
+        appliancesPerRoom = new int[sharedPrefs.getInt("totalrooms", 0)];
+
+        /*for (int i = 0; i <= sharedPrefs.getInt("totalrooms", 0); i++) {
+            for (int j = 0; j <= i; j++) {
+                appliancesPerRoom[i] += appliancesPerRoom[j];
+            }
+        }*/
 
         room_id = getIntent().getIntExtra("room_id", 0);
         room_name = getIntent().getStringExtra("room_name");
@@ -164,7 +173,12 @@ public class Appliances extends AppCompatActivity {
         //overridePendingTransition(0, 0);
         editor = sharedPrefs.edit();
         selectedtab = tabLayout.getSelectedTabPosition(); // or something else depending on your tab widget
-        editor.putInt("selectedtab", selectedtab).apply();
+        editor.putInt("selectedtab", selectedtab);
+        int temp = sharedPrefs.getInt("room"+selectedtab,0);
+        temp++;
+        editor.putInt("room"+selectedtab,temp);
+        editor.apply();
+        appliancesPerRoom[selectedtab]++;
         editor.putBoolean("isrefresh", true);
         startActivity(getIntent());
         overridePendingTransition(0, 0);
@@ -196,7 +210,6 @@ public class Appliances extends AppCompatActivity {
                 e.printStackTrace();
             }
             return FirstFragment.newInstance(items);
-
         }
 
         // Returns the page title for the top indicator
